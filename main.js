@@ -33,7 +33,9 @@ for (let i = 0; i < data.length; i++) {
   button.setAttribute("type", "button");
   button.setAttribute("class", "btn btn-outline-primary");
   button.setAttribute("data-bs-toggle", "collapse");
-  button.setAttribute("href", "#idDiv");
+  button.setAttribute("data-bs-target", "#idDiv");
+  button.setAttribute("aria-expanded", "false");
+  button.setAttribute("aria-controls", "idDiv");
   button.innerHTML = "Show more";
 
   let description = document.createElement("p");
@@ -43,11 +45,15 @@ for (let i = 0; i < data.length; i++) {
   id.innerHTML = data[i].id;
   id.classList.add("card-text");
 
+  let imgDiv = document.createElement("div");
+  imgDiv.setAttribute("id", "imgDiv");
+
   let aDiv = document.createElement("div");
   aDiv.setAttribute("class", "collapse multi-collapse");
   aDiv.setAttribute("id", "idDiv");
 
-  cardBody.appendChild(img);
+  imgDiv.appendChild(img);
+  cardBody.appendChild(imgDiv);
   cardBody.appendChild(title);
   cardBody.appendChild(button);
   aDiv.appendChild(id);
