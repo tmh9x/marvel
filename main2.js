@@ -1,19 +1,8 @@
+/* 
+
+ASYNC FETCH
+
 async function getCharacters() {
-  const promise = fetch(
-    "http://gateway.marvel.com/v1/public/characters?ts=1&apikey=0ee555e9b5008511ef8e58ac7d1f57ac&hash=1781bb80c6b8c4e26356cf58de4bdb6c"
-  );
-  const response = await promise;
-  if (response.status === 404) {
-    return [];
-  }
-  const data = await response.json();
-  console.log("DATA", data.results);
-  return data.results;
-}
-
-getCharacters();
-
-async function getUserAsync() {
   try {
     let response = await fetch(
       "http://gateway.marvel.com/v1/public/characters?ts=1&apikey=0ee555e9b5008511ef8e58ac7d1f57ac&hash=1781bb80c6b8c4e26356cf58de4bdb6c"
@@ -27,8 +16,7 @@ async function getUserAsync() {
   }
 }
 
-getUserAsync();
-// OLD //
+getCharacters(); */
 
 console.log(marvel);
 
