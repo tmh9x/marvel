@@ -3,14 +3,14 @@
 async function getCharacters() {
   try {
     let response = await fetch(
-      "http://gateway.marvel.com/v1/public/characters?ts=1&apikey=0ee555e9b5008511ef8e58ac7d1f57ac&hash=1781bb80c6b8c4e26356cf58de4bdb6c"
+      "http://gateway.marvel.com/v1/public/characters?limit=100&ts=1&apikey=0ee555e9b5008511ef8e58ac7d1f57ac&hash=1781bb80c6b8c4e26356cf58de4bdb6c"
     );
     let data = await response.json();
 
     console.log("DATEN", data);
     const charactersList = data.data.results;
     createCard(charactersList);
-    filterCharactersByName(charactersList);
+    setEventListeners(charactersList);
   } catch (err) {
     console.error(err);
   }
@@ -61,7 +61,7 @@ console.log("filterDiv", filterDiv);
 
 for (let i = 0; i < combinedArray.length; i++) {
   let charDiv = document.createElement("div");
-  charDiv.setAttribute("class", "my-1 px-2 py-2 border rounded-circle");
+  charDiv.setAttribute("class", "my-1 px-2 py-2 border rounded");
   filterDiv.appendChild(charDiv);
 
   let charLabel = document.createElement("label");
@@ -74,15 +74,11 @@ for (let i = 0; i < combinedArray.length; i++) {
   char.setAttribute("class", "checkbox");
   char.setAttribute("name", "checkChar");
   char.setAttribute("value", combinedArray[i]);
-  char.addEventListener("click", filterCharactersByName);
   char.innerHTML = combinedArray[i];
   charDiv.appendChild(char);
 }
 
-function filterCharactersByName(charactersList) {
-  console.log("hello", "hello");
-  console.log("charactersList", charactersList);
-
+function setEventListeners(charactersList) {
   let checkbox = document.querySelectorAll('input[type="checkbox"]');
   console.log("checkbox", checkbox);
 
@@ -98,14 +94,16 @@ const filterByCheckbox = (charactersList) => {
     'input[type="checkbox"]:checked'
   );
   // console.log("checkedCheckboxes", checkedCheckboxes);
-  const checkedCheckboxesArray = Array.from(checkedCheckboxes).map(
-    (box) => box.value
+  const checkedCheckboxesArray = Array.from(checkedCheckboxes).map((box) =>
+    box.value.toLowerCase()
   );
   console.log("checkedCheckboxesArray", checkedCheckboxesArray);
+
   const filteredCharacters = charactersList.filter((character) => {
-    return character.name.includes(checkedCheckboxesArray);
+    return character.name.toLowerCase().includes(checkedCheckboxesArray);
   });
   console.log("filteredCharacters", filteredCharacters);
+  createCard(filteredCharacters);
 };
 
 // FILTER ARRAY END //
@@ -113,6 +111,7 @@ const filterByCheckbox = (charactersList) => {
 function createCard(charactersList) {
   let divContainer = document.getElementById("api-data");
   divContainer.setAttribute("class", "container-fluid");
+  divContainer.innerHTML = "";
 
   let divContainerRow = document.createElement("div");
   divContainerRow.setAttribute("class", "row row-cols-2 row-cols-lg-4");
@@ -198,7 +197,7 @@ function createCard(charactersList) {
 function controller() {
   const charactersList = getCharacters();
   createCard(charactersList);
-  // createEvents()
+  setEventListeners(charactersList);
 }
 
 controller();
