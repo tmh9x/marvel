@@ -19,12 +19,9 @@ async function getCharacters() {
 // FILTER ARRAY //
 
 let filterDiv = document.createElement("div");
-filterDiv.setAttribute(
-  "class",
-  "d-flex flex-row flex-wrap justify-content-center p-2"
-);
 filterDiv.setAttribute("id", "filter");
 
+// create array alpahabet
 const alphabet = [
   "A",
   "B",
@@ -54,59 +51,32 @@ const alphabet = [
   "Z",
 ];
 
+// create array numbers
 const number = Array.from(Array(10).keys());
+
+//combine array alphabet + numbers
 const combinedArray = alphabet.concat(number);
+
 console.log("combinedArray", combinedArray);
 console.log("filterDiv", filterDiv);
 
 for (let i = 0; i < combinedArray.length; i++) {
-  let charDiv = document.createElement("div");
-  charDiv.setAttribute("class", "my-1 px-2 py-2 border rounded-circle");
-  filterDiv.appendChild(charDiv);
-
   let charLabel = document.createElement("label");
   charLabel.setAttribute("for", "checkChar");
   charLabel.innerHTML = combinedArray[i];
-  charDiv.appendChild(charLabel);
+  console.log("charLabel", charLabel);
+  filterDiv.appendChild(charLabel);
 
-  let char = document.createElement("input");
-  char.setAttribute("type", "checkbox");
-  char.setAttribute("class", "checkbox");
-  char.setAttribute("name", "checkChar");
-  char.setAttribute("value", combinedArray[i]);
-  char.addEventListener("click", filterCharactersByName);
-  char.innerHTML = combinedArray[i];
-  charDiv.appendChild(char);
+  let charInput = document.createElement("input");
+  charInput.setAttribute("type", "checkbox");
+  charInput.setAttribute("id", "checkChar");
+  charInput.setAttribute("name", "checkChar");
+  charInput.setAttribute("value", combinedArray[i]);
+  charLabel.appendChild(charInput);
+
+  const input = document.querySelector("#filter");
+  console.log("input", input);
 }
-
-function filterCharactersByName(charactersList) {
-  console.log("hello", "hello");
-  console.log("charactersList", charactersList);
-
-  let checkbox = document.querySelectorAll('input[type="checkbox"]');
-  console.log("checkbox", checkbox);
-
-  for (checkbox of checkbox) {
-    checkbox.addEventListener("click", () => {
-      filterByCheckbox(charactersList);
-    });
-  }
-}
-
-const filterByCheckbox = (charactersList) => {
-  const checkedCheckboxes = document.querySelectorAll(
-    'input[type="checkbox"]:checked'
-  );
-  // console.log("checkedCheckboxes", checkedCheckboxes);
-  const checkedCheckboxesArray = Array.from(checkedCheckboxes).map(
-    (box) => box.value
-  );
-  console.log("checkedCheckboxesArray", checkedCheckboxesArray);
-  const filteredCharacters = charactersList.filter((character) => {
-    return character.name.includes(checkedCheckboxesArray);
-  });
-  console.log("filteredCharacters", filteredCharacters);
-};
 
 // FILTER ARRAY END //
 
@@ -116,7 +86,6 @@ function createCard(charactersList) {
 
   let divContainerRow = document.createElement("div");
   divContainerRow.setAttribute("class", "row row-cols-2 row-cols-lg-4");
-  console.log("charactersList.length", charactersList);
 
   for (let i = 0; i < charactersList.length; i++) {
     let card = document.createElement("div");
@@ -195,10 +164,9 @@ function createCard(charactersList) {
 
 // CONTROLLER FUNCTION
 
-function controller() {
-  const charactersList = getCharacters();
+async function controller() {
+  const charactersList = await getCharacters();
   createCard(charactersList);
-  // createEvents()
 }
 
 controller();
