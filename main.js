@@ -16,7 +16,7 @@ async function getCharacters() {
   }
 }
 
-// FILTER ARRAY //
+// FILTER BY CLICKING ON A CHAR //
 
 let filterDiv = document.createElement("div");
 filterDiv.setAttribute(
@@ -82,11 +82,19 @@ function setEventListeners(charactersList) {
   let checkbox = document.querySelectorAll('input[type="checkbox"]');
   console.log("checkbox", checkbox);
 
+  let search = document.querySelector('input[type="search"]');
+  console.log("search", search);
+
   for (checkbox of checkbox) {
     checkbox.addEventListener("click", () => {
       filterByCheckbox(charactersList);
     });
   }
+
+  search.addEventListener("keyup", (event) => {
+    term = event.target.value.toLowerCase();
+    filterByLiveSearch(charactersList, term);
+  });
 }
 
 const filterByCheckbox = (charactersList) => {
@@ -106,7 +114,18 @@ const filterByCheckbox = (charactersList) => {
   createCard(filteredCharacters);
 };
 
-// FILTER ARRAY END //
+// LIVE SEARCH //
+
+const filterByLiveSearch = (charactersList, term) => {
+  console.log("term", term);
+  const filteredLiveCharacters = charactersList.filter((character) => {
+    console.log("character", character);
+    return character.name.toLowerCase().includes(term);
+  });
+  createCard(filteredLiveCharacters);
+};
+
+// CREATE A CHARACTER CARD //
 
 function createCard(charactersList) {
   let divContainer = document.getElementById("api-data");
